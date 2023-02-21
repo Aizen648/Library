@@ -14,8 +14,6 @@ public class LibraryApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		//Client client=new Client("mietek","kowalski", LocalDate.of(1997,3,12),"kielce");
-		Book book=new Book(214124,"ad",5,"ja",true,true);
 
 	}
 }
