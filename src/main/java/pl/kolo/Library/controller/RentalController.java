@@ -1,14 +1,13 @@
 package pl.kolo.Library.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.kolo.Library.repository.RentalRepository;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/rental")
 public class RentalController {
 
     @Autowired
@@ -24,4 +23,13 @@ public class RentalController {
         return rentalRepository.borrowed(id);
     }
 
+    @PostMapping("/add/{id}")
+    public int add(@PathVariable int id, @RequestBody List<Integer> idBooks){
+        return rentalRepository.add(id,idBooks);
+    }
+
+    @DeleteMapping("/{id}")
+    public int delete(@PathVariable int id){
+        return rentalRepository.delete(id);
+    }
 }
