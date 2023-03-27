@@ -1,0 +1,56 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.9'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'pl.kolo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.14'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+	implementation 'org.json:json:20210307'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+task generatePostsAndComments() {
+	doLast {
+		File dataSql = file("src/main/resources/data.sql")
+		dataSql.write("")
+		for (int i = 1; i <= 20; i++) {
+			dataSql.append("insert into client(name, last_Name, created) " +
+					"values ('Test name client ${i}', 'Test last name clinet ${i}', '"+ LocalDateTime.now().minusDays(20 - i) +"');\n")
+		}
+		for (int i = 1; i <= 30; i++) { //free
+			int authorId= 1 + i/5
+			dataSql.append("insert into book( client_id, title, author, created) " +
+					"values ( NULL, 'test title book ${i}', 'author test ${authorId} ', '"+ LocalDateTime.now().minusDays(100 - i) +"');\n")
+		}
+		for (int i = 30; i < 100; i++) { //first 5 don't rent book
+			int authorId= 1 + i/5
+			int postId = 1 + i / 5
+			dataSql.append("insert into book( client_id, title, author, created) " +
+					"values ( ${postId}, 'test title book ${i}', 'author test ${authorId} ', '"+ LocalDateTime.now().minusDays(100 - i) +"');\n")
+		}
+	}
+}
