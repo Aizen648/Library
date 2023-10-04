@@ -1,0 +1,12 @@
+<configuration>
+    <appender name="fileAppender" class="ch.qos.logback.core.FileAppender">
+        <file>logs.txt</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+        </encoder>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="fileAppender" />
+    </root>
+</configuration>
